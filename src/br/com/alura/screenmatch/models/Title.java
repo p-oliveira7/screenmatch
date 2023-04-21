@@ -1,12 +1,27 @@
 package br.com.alura.screenmatch.models;
 
-public class Title {
+import com.google.gson.annotations.SerializedName;
+
+public class Title implements Comparable<Title> {
+    @SerializedName("Title")
     private String name;
+    @SerializedName("Year")
     private int releaseYear;
     private boolean userAccess;
     private double totalRating;
     private int numberOfRatings;
     private int minutes;
+
+    public Title(String name, int releaseYear) {
+        this.name = name;
+        this.releaseYear = releaseYear;
+    }
+
+    public Title(TitleOmdb myTitleOmdb) {
+        this.name = myTitleOmdb.title();
+        this.releaseYear = Integer.valueOf(myTitleOmdb.year());
+        this.minutes = Integer.valueOf(myTitleOmdb.runtime().substring(0,2));
+    }
 
     public String getName() {
         return name;
@@ -57,4 +72,17 @@ public class Title {
     public double mkAverage(){
         return totalRating / numberOfRatings;
     }
+
+    @Override
+    public int compareTo(Title oTitle) {
+        return this.getName().compareTo(oTitle.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "(nome: " + name + '\'' +
+                ", ano de lançamento: " + releaseYear+","+
+        "duração:  "+ minutes + ")";
+    }
 }
+
